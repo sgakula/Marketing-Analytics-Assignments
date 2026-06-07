@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: unified_ads
+    description: >
+      Cross-channel unified advertising model combining Facebook, Google, and TikTok.
+      Each row represents one campaign/ad-group per day per platform.
+      Derived efficiency metrics (CTR, CPC, CPM, CPA, ROAS) are computed here.
+    columns:
+      - name: date
+        description: Campaign date
+        tests: [not_null]
+
+      - name: platform
+        description: Advertising platform (Facebook, Google, TikTok)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Facebook', 'Google', 'TikTok']
+
+      - name: campaign_id
+        tests: [not_null]
+
+      - name: impressions
+        description: Total ad impressions served
+        tests: [not_null]
+
+      - name: clicks
+        description: Total clicks on the ad
+        tests: [not_null]
+
+      - name: cost
+        description: Total spend in USD (normalized from spend/cost across platforms)
+        tests: [not_null]
+
+      - name: conversions
+        description: Total conversions attributed to the ad
+        tests: [not_null]
+
+      - name: ctr
+        description: Click-through rate (clicks / impressions)
+
+      - name: avg_cpc
+        description: Average cost per click (cost / clicks)
+
+      - name: cpm
+        description: Cost per 1,000 impressions (cost / impressions * 1000)
+
+      - name: cpa
+        description: Cost per acquisition (cost / conversions)
+
+      - name: roas
+        description: Return on ad spend (conversion_value / cost) — Google only
+
+      - name: video_completion_rate
+        description: Share of video views that watched 100% — TikTok only

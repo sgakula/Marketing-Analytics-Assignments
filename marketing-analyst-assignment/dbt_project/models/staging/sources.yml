@@ -1,0 +1,48 @@
+version: 2
+
+sources:
+  - name: raw
+    database: "{{ env_var('DBT_DATABASE') }}"
+    schema: marketing_analytics
+    tables:
+      - name: facebook_ads
+        description: Raw Facebook Ads daily campaign data
+        columns:
+          - name: date
+            tests: [not_null]
+          - name: campaign_id
+            tests: [not_null]
+          - name: impressions
+            tests: [not_null]
+          - name: clicks
+            tests: [not_null]
+          - name: spend
+            tests: [not_null]
+
+      - name: google_ads
+        description: Raw Google Ads daily campaign data
+        columns:
+          - name: date
+            tests: [not_null]
+          - name: campaign_id
+            tests: [not_null]
+          - name: impressions
+            tests: [not_null]
+          - name: clicks
+            tests: [not_null]
+          - name: cost
+            tests: [not_null]
+
+      - name: tiktok_ads
+        description: Raw TikTok Ads daily campaign data
+        columns:
+          - name: date
+            tests: [not_null]
+          - name: campaign_id
+            tests: [not_null]
+          - name: impressions
+            tests: [not_null]
+          - name: clicks
+            tests: [not_null]
+          - name: cost
+            tests: [not_null]
