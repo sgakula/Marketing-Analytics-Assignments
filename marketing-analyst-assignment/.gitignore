@@ -41,6 +41,10 @@ desktop.ini
 .ipynb_checkpoints/
 *.ipynb
 
+# Personal notes
+VIDEO_SCRIPT.md
+SETUP_GUIDE.md
+
 # Logs & temp
 *.log
 *.tmp
