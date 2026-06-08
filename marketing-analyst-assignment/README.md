@@ -1,12 +1,14 @@
-# Senior Marketing Analyst - Technical Assignment
+# Senior Marketing Analyst — Technical Assignment
 
 ## Overview
 This project unifies raw advertising data from three platforms (Facebook, Google, TikTok) into a single cross-channel analytics model, with a live dashboard for performance insights.
 
 ## Stack
 - **BigQuery** — cloud database (Google Cloud free tier)
-- **dbt** — data transformation and unified model
 - **Looker Studio** — live interactive dashboard
+
+## Live Dashboard
+**[Cross-Channel Ads Performance → January 2024](https://datastudio.google.com/reporting/c97cad28-b1f8-4de7-9859-a7cb0441b32e)**
 
 ## Repository Structure
 ```
@@ -16,14 +18,9 @@ marketing-analyst-assignment/
 ├── 03_tiktok_ads.csv            # Source data: TikTok Ads
 ├── upload_to_bigquery.py        # Script to load CSVs into BigQuery
 ├── requirements.txt             # Python dependencies
-├── sql/
-│   ├── 01_source_tables.sql     # BigQuery DDL for source tables
-│   └── 02_unified_ads_model.sql # Unified cross-channel table (standalone SQL)
-└── dbt_project/
-    └── models/
-        ├── staging/             # Normalize raw schemas per platform
-        ├── intermediate/        # Union all three platforms
-        └── marts/               # Final table with derived KPIs (CTR, CPA, CPM, ROAS)
+└── sql/
+    ├── 01_source_tables.sql     # BigQuery DDL for source tables
+    └── 02_unified_ads_model.sql # Unified cross-channel table
 ```
 
 ## Data Model
@@ -38,7 +35,6 @@ The unified model normalizes three platforms into a single schema:
 | `cpa` | Cost per acquisition (cost / conversions) |
 | `cpm` | Cost per 1,000 impressions |
 | `roas` | Return on ad spend — Google only |
-| `video_completion_rate` | 100% watch rate — TikTok only |
 
 Platform-specific columns (reach, frequency, quality_score, video_watch_%, likes/shares/comments) are preserved with `NULL` for platforms where not applicable.
 
@@ -55,25 +51,5 @@ gcloud auth application-default login
 python upload_to_bigquery.py --project YOUR_PROJECT_ID
 ```
 
-### 3. Run dbt to build the unified model
-```bash
-cd dbt_project
-dbt debug    # verify connection
-dbt run      # staging → intermediate → mart
-dbt test     # data quality checks
-```
-
-Or run the standalone SQL directly in the BigQuery console: `sql/02_unified_ads_model.sql`
-
-## Dashboard
-
-**[Live Dashboard →](https://lookerstudio.google.com)**
-
-Built in Looker Studio on top of the `unified_ads` BigQuery table. Includes:
-- KPI scorecards: Total Spend, Impressions, Clicks, Conversions, CTR, CPA
-- Spend by Platform (bar chart)
-- Impressions over time by platform (time series)
-- Conversions by Platform (donut chart)
-- Campaign performance table
-- Avg CPA by Platform (bar chart)
-- Spend vs. Conversions by Campaign (bubble chart — bubble size = impressions)
+### 3. Create the unified table
+Run `sql/02_unified_ads_model.sql` in the BigQuery console.
